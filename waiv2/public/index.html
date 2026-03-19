@@ -7,186 +7,132 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:      #090908;
-  --bg2:     #111110;
-  --bg3:     #1c1c1a;
-  --surface: #242422;
-  --b:       rgba(255,255,255,0.07);
-  --b2:      rgba(255,255,255,0.13);
-  --text:    #eeebe4;
-  --text2:   #9b9890;
-  --text3:   #5e5c57;
-  --acc:     #c9b99a;
-  --acc2:    #8c7558;
-  --gold:    #d4a853;
-  --gold2:   #9a7530;
-  --green:   #4a7c59;
-  --r:       12px;
-  --r2:      8px;
+  --bg:#090908; --bg2:#111110; --bg3:#1c1c1a; --surface:#242422;
+  --b:rgba(255,255,255,0.07); --b2:rgba(255,255,255,0.13);
+  --text:#eeebe4; --text2:#9b9890; --text3:#5e5c57;
+  --acc:#c9b99a; --acc2:#8c7558;
+  --gold:#d4a853; --gold2:#9a7530; --green:#4a7c59;
+  --r:12px; --r2:8px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 
-/* ── LOADER ─────────────────────────────── */
-#loader {
-  position:fixed; inset:0; background:var(--bg);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  z-index:1000; transition:opacity .9s ease, visibility .9s ease;
-}
-#loader.out { opacity:0; visibility:hidden; pointer-events:none; }
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity .9s ease,visibility .9s ease;}
+#loader.out{opacity:0;visibility:hidden;pointer-events:none;}
+.logo-wrap{display:flex;align-items:flex-start;font-family:'DM Serif Display',serif;font-size:100px;color:var(--text);letter-spacing:-5px;line-height:1;}
+.logo-ai{opacity:0;animation:fi .4s ease .2s forwards;}
+.bang-wrap{position:relative;width:46px;height:108px;display:inline-block;margin-left:2px;}
+.bang-bar{position:absolute;width:7px;top:10px;left:50%;transform:translateX(-50%);background:var(--text);border-radius:4px;height:0;animation:barG .45s cubic-bezier(.2,0,.2,1) 1.2s forwards;}
+.bang-dot{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--text);left:50%;top:10px;transform:translateX(-50%);opacity:0;animation:dotA .3s ease .7s forwards,dotD .5s cubic-bezier(.4,0,.2,1) 1.3s forwards;}
+@keyframes fi{to{opacity:1;}}
+@keyframes barG{to{height:60px;}}
+@keyframes dotA{to{opacity:1;}}
+@keyframes dotD{0%{top:10px;width:11px;height:11px;}60%{top:80px;width:10px;height:10px;}100%{top:86px;width:9px;height:9px;}}
+.loader-by{margin-top:36px;font-size:12px;color:var(--text3);letter-spacing:.1em;font-weight:300;opacity:0;animation:fi .5s ease .5s forwards;}
 
-.logo-wrap {
-  display:flex; align-items:flex-start;
-  font-family:'DM Serif Display',serif;
-  font-size:100px; color:var(--text); letter-spacing:-5px; line-height:1;
-}
-.logo-ai { opacity:0; animation:fi .4s ease .2s forwards; }
-
-.bang-wrap { position:relative; width:46px; height:108px; display:inline-block; margin-left:2px; }
-
-.bang-bar {
-  position:absolute; width:7px; top:10px; left:50%; transform:translateX(-50%);
-  background:var(--text); border-radius:4px; height:0;
-  animation:barG .45s cubic-bezier(.2,0,.2,1) 1.2s forwards;
-}
-.bang-dot {
-  position:absolute; width:11px; height:11px; border-radius:50%;
-  background:var(--text); left:50%; top:10px; transform:translateX(-50%);
-  opacity:0;
-  animation: dotA .3s ease .7s forwards, dotD .5s cubic-bezier(.4,0,.2,1) 1.3s forwards;
-}
-
-@keyframes fi   { to { opacity:1; } }
-@keyframes barG { to { height:60px; } }
-@keyframes dotA { to { opacity:1; } }
-@keyframes dotD {
-  0%   { top:10px; width:11px; height:11px; }
-  60%  { top:80px; width:10px; height:10px; }
-  100% { top:86px; width:9px;  height:9px;  }
-}
-
-.loader-by {
-  margin-top:36px; font-size:12px; color:var(--text3);
-  letter-spacing:.1em; font-weight:300;
-  opacity:0; animation:fi .5s ease .5s forwards;
-}
-
-/* ── APP ────────────────────────────────── */
-#app { min-height:100vh; display:flex; flex-direction:column; opacity:0; transition:opacity .7s ease; }
-#app.on { opacity:1; }
+/* APP */
+#app{min-height:100vh;display:flex;flex-direction:column;opacity:0;transition:opacity .7s ease;}
+#app.on{opacity:1;}
 
 /* NAV */
-nav { display:flex; align-items:center; justify-content:space-between; padding:22px 44px; border-bottom:1px solid var(--b); }
-.nav-logo { font-family:'DM Serif Display',serif; font-size:26px; letter-spacing:-1px; }
-.nav-hint  { font-size:12px; color:var(--text3); letter-spacing:.05em; }
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 44px;border-bottom:1px solid var(--b);}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:-1px;}
+.nav-hint{font-size:12px;color:var(--text3);letter-spacing:.05em;}
 
 /* HERO */
-.hero {
-  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:72px 40px 56px; max-width:760px; margin:0 auto; width:100%; text-align:center;
-}
-.eyebrow  { font-size:11px; color:var(--acc2); letter-spacing:.14em; text-transform:uppercase; font-weight:600; margin-bottom:22px; opacity:0; animation:fi .5s ease 3.2s forwards; }
-.headline { font-family:'DM Serif Display',serif; font-size:46px; line-height:1.15; letter-spacing:-1.5px; margin-bottom:16px; opacity:0; animation:fi .6s ease 3.3s forwards; }
-.subline  { font-size:15px; color:var(--text2); line-height:1.75; margin-bottom:44px; max-width:500px; opacity:0; animation:fi .6s ease 3.4s forwards; }
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 40px 56px;max-width:760px;margin:0 auto;width:100%;text-align:center;}
+.eyebrow{font-size:11px;color:var(--acc2);letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:22px;opacity:0;animation:fi .5s ease 3.2s forwards;}
+.headline{font-family:'DM Serif Display',serif;font-size:46px;line-height:1.15;letter-spacing:-1.5px;margin-bottom:16px;opacity:0;animation:fi .6s ease 3.3s forwards;}
+.subline{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:44px;max-width:500px;opacity:0;animation:fi .6s ease 3.4s forwards;}
 
 /* INPUT */
-.inp-outer { width:100%; max-width:620px; opacity:0; animation:fi .6s ease 3.5s forwards; }
-.inp-box {
-  background:var(--bg2); border:1px solid var(--b2); border-radius:var(--r);
-  overflow:hidden; transition:border-color .2s, box-shadow .2s;
-}
-.inp-box:focus-within { border-color:var(--acc2); box-shadow:0 0 0 3px rgba(140,117,88,.14); }
-.inp-wrap { position:relative; }
-.inp-box textarea {
-  width:100%; background:transparent; border:none; outline:none; resize:none;
-  font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text);
-  padding:20px 22px 58px; min-height:104px; line-height:1.65;
-}
-.inp-box textarea::placeholder { color:var(--text3); }
-.inp-foot { position:absolute; bottom:12px; right:12px; left:12px; display:flex; align-items:center; justify-content:space-between; }
-.char-ct  { font-size:12px; color:var(--text3); }
-.btn-go {
-  background:var(--acc); color:#1a140e; border:none; border-radius:var(--r2);
-  padding:8px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
-  cursor:pointer; transition:background .2s, transform .1s;
-}
-.btn-go:hover    { background:#d9c9ad; }
-.btn-go:active   { transform:scale(.97); }
-.btn-go:disabled { background:var(--surface); color:var(--text3); cursor:not-allowed; }
+.inp-outer{width:100%;max-width:620px;opacity:0;animation:fi .6s ease 3.5s forwards;}
+.inp-box{background:var(--bg2);border:1px solid var(--b2);border-radius:var(--r);overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.inp-box:focus-within{border-color:var(--acc2);box-shadow:0 0 0 3px rgba(140,117,88,.14);}
+.inp-wrap{position:relative;}
+.inp-box textarea{width:100%;background:transparent;border:none;outline:none;resize:none;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);padding:20px 22px 58px;min-height:104px;line-height:1.65;}
+.inp-box textarea::placeholder{color:var(--text3);}
+.inp-foot{position:absolute;bottom:12px;right:12px;left:12px;display:flex;align-items:center;justify-content:space-between;}
+.char-ct{font-size:12px;color:var(--text3);}
+.btn-go{background:var(--acc);color:#1a140e;border:none;border-radius:var(--r2);padding:8px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
+.btn-go:hover{background:#d9c9ad;}
+.btn-go:active{transform:scale(.97);}
+.btn-go:disabled{background:var(--surface);color:var(--text3);cursor:not-allowed;}
 
 /* RESULTS */
-#results { display:none; width:100%; max-width:760px; margin:0 auto; padding:0 44px 80px; }
+#results{display:none;width:100%;max-width:760px;margin:0 auto;padding:0 44px 80px;}
 
 /* CARD */
-.card { background:var(--bg2); border:1px solid var(--b); border-radius:var(--r); padding:30px; margin-bottom:18px; animation:slideUp .4s ease forwards; }
-@keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
-.clabel { font-size:10px; color:var(--acc2); letter-spacing:.14em; text-transform:uppercase; font-weight:700; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-.clabel::before { content:''; width:14px; height:1px; background:var(--acc2); }
-.ctitle { font-family:'DM Serif Display',serif; font-size:22px; color:var(--text); margin-bottom:12px; line-height:1.3; }
-.cbody  { font-size:15px; color:var(--text2); line-height:1.75; }
+.card{background:var(--bg2);border:1px solid var(--b);border-radius:var(--r);padding:30px;margin-bottom:18px;animation:slideUp .4s ease forwards;}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.clabel{font-size:10px;color:var(--acc2);letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.clabel::before{content:'';width:14px;height:1px;background:var(--acc2);}
+.ctitle{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:12px;line-height:1.3;}
+.cbody{font-size:15px;color:var(--text2);line-height:1.75;}
 
 /* QUESTIONS */
-.q-list { list-style:none; }
-.q-item { padding:13px 0; border-bottom:1px solid var(--b); display:flex; gap:12px; align-items:flex-start; }
-.q-item:last-child { border-bottom:none; }
-.q-n  { font-size:11px; color:var(--text3); font-weight:700; letter-spacing:.05em; min-width:22px; padding-top:2px; }
-.q-t  { font-size:15px; color:var(--text); line-height:1.6; flex:1; }
-.a-in {
-  margin-top:9px; width:100%; background:var(--bg3); border:1px solid var(--b);
-  border-radius:var(--r2); padding:9px 14px;
-  font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text);
-  outline:none; transition:border-color .2s;
-}
-.a-in:focus       { border-color:var(--acc2); }
-.a-in::placeholder { color:var(--text3); }
-
-.btn-road {
-  margin-top:22px; width:100%; background:transparent; border:1px solid var(--acc2);
-  border-radius:var(--r2); padding:13px; font-family:'DM Sans',sans-serif;
-  font-size:15px; font-weight:500; color:var(--acc); cursor:pointer; transition:background .2s;
-}
-.btn-road:hover    { background:rgba(140,117,88,.1); }
-.btn-road:disabled { opacity:.35; cursor:not-allowed; }
+.q-list{list-style:none;}
+.q-item{padding:13px 0;border-bottom:1px solid var(--b);display:flex;gap:12px;align-items:flex-start;}
+.q-item:last-child{border-bottom:none;}
+.q-n{font-size:11px;color:var(--text3);font-weight:700;letter-spacing:.05em;min-width:22px;padding-top:2px;}
+.q-t{font-size:15px;color:var(--text);line-height:1.6;flex:1;}
+.a-in{margin-top:9px;width:100%;background:var(--bg3);border:1px solid var(--b);border-radius:var(--r2);padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
+.a-in:focus{border-color:var(--acc2);}
+.a-in::placeholder{color:var(--text3);}
+.btn-road{margin-top:22px;width:100%;background:transparent;border:1px solid var(--acc2);border-radius:var(--r2);padding:13px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--acc);cursor:pointer;transition:background .2s;}
+.btn-road:hover{background:rgba(140,117,88,.1);}
+.btn-road:disabled{opacity:.35;cursor:not-allowed;}
 
 /* THINKING */
-.thinking { display:flex; align-items:center; gap:12px; padding:22px; color:var(--text3); font-size:14px; }
-.spin { width:18px; height:18px; border:2px solid var(--b2); border-top-color:var(--acc); border-radius:50%; animation:spin .75s linear infinite; flex-shrink:0; }
-@keyframes spin { to { transform:rotate(360deg); } }
+.thinking{display:flex;align-items:center;gap:12px;padding:22px;color:var(--text3);font-size:14px;}
+.spin{width:18px;height:18px;border:2px solid var(--b2);border-top-color:var(--acc);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
 /* ERROR */
-.err-box { background:rgba(162,45,45,.1); border:1px solid rgba(162,45,45,.25); border-radius:var(--r2); padding:16px 20px; font-size:14px; color:#f09595; line-height:1.6; }
+.err-box{background:rgba(162,45,45,.1);border:1px solid rgba(162,45,45,.25);border-radius:var(--r2);padding:16px 20px;font-size:14px;color:#f09595;line-height:1.6;}
 
-/* ROADMAP STEPS */
-.step { position:relative; padding:0 0 30px 42px; }
-.step::before { content:''; position:absolute; left:14px; top:32px; bottom:0; width:1px; background:linear-gradient(to bottom,var(--b2),transparent); }
-.step:last-child::before { display:none; }
-.step-num { position:absolute; left:0; top:0; width:30px; height:30px; border-radius:50%; background:var(--bg3); border:1px solid var(--b2); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--acc); }
-.step-title { font-size:16px; font-weight:600; color:var(--text); margin-bottom:5px; padding-top:4px; }
-.step-desc  { font-size:14px; color:var(--text2); line-height:1.7; margin-bottom:11px; }
-.model-badge { display:inline-flex; align-items:center; gap:6px; background:var(--bg3); border:1px solid var(--b); border-radius:20px; padding:4px 12px; font-size:12px; color:var(--text2); margin-bottom:11px; }
-.model-dot   { width:6px; height:6px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+/* ROADMAP STEP */
+.step{position:relative;padding:0 0 32px 42px;}
+.step::before{content:'';position:absolute;left:14px;top:32px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--b2),transparent);}
+.step:last-child::before{display:none;}
+.step-num{position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--acc);}
+.step-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:10px;padding-top:4px;}
 
-/* PROMPT BLOCK */
-.prompt-block { background:var(--bg); border:1px solid var(--b); border-left:3px solid var(--gold2); border-radius:var(--r2); padding:13px 14px; position:relative; }
-.prompt-label { font-size:10px; color:var(--text3); letter-spacing:.12em; text-transform:uppercase; font-weight:700; margin-bottom:7px; }
-.prompt-text  { font-family:'Courier New',monospace; font-size:13px; color:var(--acc); line-height:1.7; white-space:pre-wrap; word-break:break-word; padding-right:56px; }
-.btn-cp { position:absolute; top:10px; right:10px; background:var(--surface); border:1px solid var(--b); border-radius:6px; padding:4px 10px; font-size:11px; color:var(--text3); cursor:pointer; font-family:'DM Sans',sans-serif; transition:color .2s, border-color .2s; }
-.btn-cp:hover { color:var(--text); border-color:var(--b2); }
-.btn-cp.ok    { color:var(--green); border-color:#2d4f38; }
+/* 세 가지 설명 블록 */
+.info-block{margin-bottom:8px;padding:10px 14px;border-radius:var(--r2);font-size:13px;line-height:1.65;}
+.info-what{background:rgba(201,185,154,0.06);border-left:3px solid var(--acc2);}
+.info-output{background:rgba(212,168,83,0.06);border-left:3px solid var(--gold2);}
+.info-next{background:rgba(74,124,89,0.08);border-left:3px solid var(--green);}
+.info-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.info-what  .info-tag{color:var(--acc2);}
+.info-output .info-tag{color:var(--gold2);}
+.info-next  .info-tag{color:var(--green);}
+.info-text{color:var(--text2);}
 
-/* FINAL PACKAGE */
-.final-text { font-family:'Courier New',monospace; font-size:13px; color:var(--text2); line-height:1.8; white-space:pre-wrap; word-break:break-word; max-height:300px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--b2) transparent; }
-.btn-copy-all { margin-top:14px; width:100%; background:var(--gold2); border:none; border-radius:var(--r2); padding:13px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; color:#160f02; cursor:pointer; transition:background .2s; }
-.btn-copy-all:hover { background:var(--gold); }
-.btn-copy-all.ok    { background:var(--green); color:#d4f0a0; }
+.model-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--b);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin:10px 0 10px;}
+.model-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
 
-@media(max-width:600px) {
-  nav { padding:16px 20px; }
-  .hero { padding:52px 20px 36px; }
-  .headline { font-size:34px; }
-  #results { padding:0 20px 60px; }
-  .card { padding:20px; }
+/* PROMPT */
+.prompt-block{background:var(--bg);border:1px solid var(--b);border-left:3px solid var(--gold2);border-radius:var(--r2);padding:13px 14px;position:relative;}
+.prompt-label{font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:7px;}
+.prompt-text{font-family:'Courier New',monospace;font-size:13px;color:var(--acc);line-height:1.7;white-space:pre-wrap;word-break:break-word;padding-right:56px;}
+.btn-cp{position:absolute;top:10px;right:10px;background:var(--surface);border:1px solid var(--b);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:color .2s,border-color .2s;}
+.btn-cp:hover{color:var(--text);border-color:var(--b2);}
+.btn-cp.ok{color:var(--green);border-color:#2d4f38;}
+
+/* FINAL */
+.final-text{font-family:'Courier New',monospace;font-size:13px;color:var(--text2);line-height:1.8;white-space:pre-wrap;word-break:break-word;max-height:300px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--b2) transparent;}
+.btn-copy-all{margin-top:14px;width:100%;background:var(--gold2);border:none;border-radius:var(--r2);padding:13px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:#160f02;cursor:pointer;transition:background .2s;}
+.btn-copy-all:hover{background:var(--gold);}
+.btn-copy-all.ok{background:var(--green);color:#d4f0a0;}
+
+@media(max-width:600px){
+  nav{padding:16px 20px;}
+  .hero{padding:52px 20px 36px;}
+  .headline{font-size:34px;}
+  #results{padding:0 20px 60px;}
+  .card{padding:20px;}
 }
 </style>
 </head>
@@ -237,14 +183,12 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:2
   <!-- RESULTS -->
   <div id="results">
 
-    <!-- Summary -->
     <div id="summaryCard" class="card" style="display:none">
       <div class="clabel">목표 요약</div>
       <div class="ctitle" id="sumTitle"></div>
       <div class="cbody"  id="sumBody"></div>
     </div>
 
-    <!-- Questions -->
     <div id="qCard" class="card" style="display:none">
       <div class="clabel">맞춤 질문</div>
       <div class="ctitle">조금 더 알려주세요</div>
@@ -255,7 +199,6 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:2
       <button class="btn-road" id="btnRoad" onclick="generateRoadmap()">로드맵 생성하기 →</button>
     </div>
 
-    <!-- Thinking -->
     <div id="thinkWrap" style="display:none">
       <div class="thinking">
         <div class="spin"></div>
@@ -263,12 +206,10 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:2
       </div>
     </div>
 
-    <!-- Error -->
     <div id="errCard" class="card" style="display:none">
       <div class="err-box" id="errMsg"></div>
     </div>
 
-    <!-- Roadmap -->
     <div id="roadCard" class="card" style="display:none">
       <div class="clabel">AI 로드맵</div>
       <div class="ctitle">단계별 AI 실행 계획</div>
@@ -276,12 +217,11 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:2
       <div id="roadSteps"></div>
     </div>
 
-    <!-- Final package -->
     <div id="finalCard" class="card" style="display:none">
       <div class="clabel">통합 프롬프트 패키지</div>
       <div class="ctitle">복사 가능한 전체 프롬프트</div>
       <p style="font-size:13px;color:var(--text3);margin-bottom:16px">
-        모든 단계의 프롬프트를 하나로 정리했습니다. 한 번에 복사해서 활용하세요.
+        모든 단계의 프롬프트를 하나로 정리했습니다. 순서대로 각 AI 도구에 붙여넣어 사용하세요.
       </p>
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:var(--r);padding:20px">
         <div class="final-text" id="finalText"></div>
@@ -289,14 +229,12 @@ nav { display:flex; align-items:center; justify-content:space-between; padding:2
       <button class="btn-copy-all" id="btnAll" onclick="copyAll()">전체 프롬프트 복사하기</button>
     </div>
 
-  </div><!-- /results -->
-</div><!-- /app -->
+  </div>
+</div>
 
 <script>
-/* ── state ──────────────────────────────────────────── */
 const S = { goal:'', questions:[], allPrompts:'' };
 
-/* ── loader ─────────────────────────────────────────── */
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('loader').classList.add('out');
@@ -304,15 +242,14 @@ window.addEventListener('load', () => {
   }, 2900);
 });
 
-/* ── tiny helpers ───────────────────────────────────── */
-const $      = id => document.getElementById(id);
-const show   = id => { const e=$(id); if(e) e.style.display=''; };
-const hide   = id => { const e=$(id); if(e) e.style.display='none'; };
-const setText= (id,t) => { const e=$(id); if(e) e.textContent = t; };
-const esc    = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const $       = id => document.getElementById(id);
+const show    = id => { const e=$(id); if(e) e.style.display=''; };
+const hide    = id => { const e=$(id); if(e) e.style.display='none'; };
+const setText = (id,t) => { const e=$(id); if(e) e.textContent=t; };
+const esc     = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 function updateChar() {
-  $('charOut').textContent = `${$('goalInput').value.length} / 1000`;
+  $('charOut').textContent = $('goalInput').value.length + ' / 1000';
 }
 function scrollDown() {
   $('results').scrollIntoView({ behavior:'smooth', block:'start' });
@@ -323,7 +260,6 @@ function showErr(msg) {
   $('errMsg').textContent = msg;
 }
 
-/* ── STEP 1: analyse goal → questions ───────────────── */
 async function startFlow() {
   const goal = $('goalInput').value.trim();
   if (!goal) return;
@@ -331,7 +267,6 @@ async function startFlow() {
 
   $('btnGo').disabled = true;
   $('goalInput').disabled = true;
-
   $('results').style.display = 'block';
   ['summaryCard','qCard','roadCard','finalCard','errCard'].forEach(hide);
   show('thinkWrap');
@@ -345,10 +280,9 @@ async function startFlow() {
       body: JSON.stringify({ goal })
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || `서버 오류 ${res.status}`);
+    if (!res.ok) throw new Error(data.error || '서버 오류 ' + res.status);
 
     S.questions = data.questions || [];
-
     setText('sumTitle', data.summary_title || '');
     setText('sumBody',  data.summary_body  || '');
     show('summaryCard');
@@ -359,11 +293,11 @@ async function startFlow() {
       const li = document.createElement('li');
       li.className = 'q-item';
       li.innerHTML =
-        `<span class="q-n">Q${i+1}</span>` +
-        `<div style="flex:1">` +
-          `<div class="q-t">${esc(q)}</div>` +
-          `<input class="a-in" id="a${i}" type="text" placeholder="답변 입력 (선택사항)">` +
-        `</div>`;
+        '<span class="q-n">Q' + (i+1) + '</span>' +
+        '<div style="flex:1">' +
+          '<div class="q-t">' + esc(q) + '</div>' +
+          '<input class="a-in" id="a' + i + '" type="text" placeholder="답변 입력 (선택사항)">' +
+        '</div>';
       qList.appendChild(li);
     });
 
@@ -378,17 +312,16 @@ async function startFlow() {
   }
 }
 
-/* ── STEP 2: generate roadmap ───────────────────────── */
 async function generateRoadmap() {
   $('btnRoad').disabled = true;
   hide('errCard');
 
   const qaPairs = S.questions
-    .map((q, i) => `Q: ${q}\nA: ${($(`a${i}`)?.value || '').trim() || '(답변 없음)'}`)
+    .map((q, i) => 'Q: ' + q + '\nA: ' + (($('a'+i) && $('a'+i).value.trim()) || '(답변 없음)'))
     .join('\n\n');
 
   show('thinkWrap');
-  setText('thinkText', 'Gemini가 최적의 AI 로드맵을 설계하는 중...');
+  setText('thinkText', 'Gemini가 맞춤 로드맵을 설계하는 중...');
   scrollDown();
 
   try {
@@ -398,41 +331,62 @@ async function generateRoadmap() {
       body: JSON.stringify({ goal: S.goal, qaPairs })
     });
     const roadmap = await res.json();
-    if (!res.ok) throw new Error(roadmap.error || `서버 오류 ${res.status}`);
+    if (!res.ok) throw new Error(roadmap.error || '서버 오류 ' + res.status);
 
-    // Render intro
     setText('roadIntro', roadmap.intro || '');
 
-    // Render steps
     const stepsEl = $('roadSteps');
     stepsEl.innerHTML = '';
-    const pkgLines = [`=== waiv Prompt Package ===`, `Goal: ${S.goal}`, ''];
+    const pkgLines = ['=== waiv Prompt Package ===', 'Goal: ' + S.goal, ''];
 
     (roadmap.steps || []).forEach((st, i) => {
-      const pid = `pt${i}`, bid = `cp${i}`;
+      const pid = 'pt' + i;
+      const bid = 'cp' + i;
+      const isLast = i === roadmap.steps.length - 1;
       const div = document.createElement('div');
       div.className = 'step';
+
       div.innerHTML =
-        `<div class="step-num">${i+1}</div>` +
-        `<div>` +
-          `<div class="step-title">${esc(st.title)}</div>` +
-          `<div class="step-desc">${esc(st.description)}</div>` +
-          `<div class="model-badge">` +
-            `<span class="model-dot"></span>` +
-            `${esc(st.model)}` +
-            `<span style="color:var(--text3)"> — ${esc(st.model_reason)}</span>` +
-          `</div>` +
-          `<div class="prompt-block">` +
-            `<div class="prompt-label">Prompt · English</div>` +
-            `<div class="prompt-text" id="${pid}">${esc(st.prompt)}</div>` +
-            `<button class="btn-cp" id="${bid}" onclick="cpPrompt('${pid}','${bid}')">Copy</button>` +
-          `</div>` +
-        `</div>`;
+        '<div class="step-num">' + (i+1) + '</div>' +
+        '<div>' +
+          '<div class="step-title">' + esc(st.title) + '</div>' +
+
+          '<div class="info-block info-what">' +
+            '<div class="info-tag">지금 할 일</div>' +
+            '<div class="info-text">' + esc(st.what_to_do) + '</div>' +
+          '</div>' +
+
+          '<div class="info-block info-output">' +
+            '<div class="info-tag">이 단계의 결과물</div>' +
+            '<div class="info-text">' + esc(st.output) + '</div>' +
+          '</div>' +
+
+          '<div class="info-block info-next">' +
+            '<div class="info-tag">' + (isLast ? '🎉 최종 완료' : '다음 단계로 연결') + '</div>' +
+            '<div class="info-text">' + esc(st.next_connection) + '</div>' +
+          '</div>' +
+
+          '<div class="model-badge">' +
+            '<span class="model-dot"></span>' +
+            esc(st.model) +
+            '<span style="color:var(--text3)"> — ' + esc(st.model_reason) + '</span>' +
+          '</div>' +
+
+          '<div class="prompt-block">' +
+            '<div class="prompt-label">복사해서 바로 붙여넣을 프롬프트 · English</div>' +
+            '<div class="prompt-text" id="' + pid + '">' + esc(st.prompt) + '</div>' +
+            '<button class="btn-cp" id="' + bid + '" onclick="cpPrompt(\'' + pid + '\',\'' + bid + '\')">Copy</button>' +
+          '</div>' +
+        '</div>';
+
       stepsEl.appendChild(div);
 
-      pkgLines.push(`--- Step ${i+1}: ${st.title} ---`);
-      pkgLines.push(`Model: ${st.model}`);
-      pkgLines.push(`Prompt:\n${st.prompt}`);
+      pkgLines.push('--- Step ' + (i+1) + ': ' + st.title + ' ---');
+      pkgLines.push('사용 도구: ' + st.model);
+      pkgLines.push('할 일: ' + st.what_to_do);
+      pkgLines.push('결과물: ' + st.output);
+      pkgLines.push('다음 연결: ' + st.next_connection);
+      pkgLines.push('Prompt:\n' + st.prompt);
       pkgLines.push('');
     });
 
@@ -450,9 +404,8 @@ async function generateRoadmap() {
   }
 }
 
-/* ── copy helpers ───────────────────────────────────── */
 function cpPrompt(tid, bid) {
-  const txt = $(tid)?.textContent || '';
+  const txt = $(tid) ? $(tid).textContent : '';
   navigator.clipboard.writeText(txt).then(() => {
     const b = $(bid);
     b.textContent = 'Copied!';
@@ -470,10 +423,11 @@ function copyAll() {
   });
 }
 
-/* ── Enter to submit ────────────────────────────────── */
 $('goalInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); startFlow(); }
 });
 </script>
 </body>
 </html>
+
+   
