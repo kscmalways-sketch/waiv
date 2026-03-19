@@ -8,7 +8,7 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 // Gemini model — easy to change via env
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
