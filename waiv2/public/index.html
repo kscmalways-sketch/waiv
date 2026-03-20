@@ -43,7 +43,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
 /* HERO */
 .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 40px 56px;max-width:760px;margin:0 auto;width:100%;text-align:center;}
 .eyebrow{font-size:11px;color:var(--acc2);letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:22px;opacity:0;animation:fi .5s ease 3.2s forwards;}
-.headline{font-family:'DM Serif Display',serif;font-size:46px;line-height:1.15;letter-spacing:-1.5px;margin-bottom:16px;opacity:0;animation:fi .6s ease 3.3s forwards;}
+.headline{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.25;letter-spacing:-1px;margin-bottom:16px;opacity:0;animation:fi .6s ease 3.3s forwards;}
 .subline{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:44px;max-width:500px;opacity:0;animation:fi .6s ease 3.4s forwards;}
 
 /* INPUT */
@@ -55,6 +55,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
 .inp-box textarea::placeholder{color:var(--text3);}
 .inp-foot{position:absolute;bottom:12px;right:12px;left:12px;display:flex;align-items:center;justify-content:space-between;}
 .char-ct{font-size:12px;color:var(--text3);}
+.inp-btns{display:flex;align-items:center;gap:8px;}
+
+/* MIC BUTTON */
+.btn-mic{background:transparent;border:1px solid var(--b2);border-radius:var(--r2);padding:7px 10px;color:var(--text2);cursor:pointer;font-size:15px;line-height:1;transition:all .2s;}
+.btn-mic:hover{border-color:var(--acc2);color:var(--acc);}
+.btn-mic.listening{border-color:#f09595;color:#f09595;animation:pulseAnim 1s ease infinite;}
+@keyframes pulseAnim{0%,100%{opacity:1;}50%{opacity:.35;}}
+
 .btn-go{background:var(--acc);color:#1a140e;border:none;border-radius:var(--r2);padding:8px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
 .btn-go:hover{background:#d9c9ad;}
 .btn-go:active{transform:scale(.97);}
@@ -98,19 +106,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
 .step:last-child::before{display:none;}
 .step-num{position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--acc);}
 .step-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:10px;padding-top:4px;}
-
-/* 세 가지 설명 블록 */
-.info-block{margin-bottom:8px;padding:10px 14px;border-radius:var(--r2);font-size:13px;line-height:1.65;}
+.info-block{margin-bottom:8px;padding:10px 14px;border-radius:var(--r2);}
 .info-what{background:rgba(201,185,154,0.06);border-left:3px solid var(--acc2);}
 .info-output{background:rgba(212,168,83,0.06);border-left:3px solid var(--gold2);}
 .info-next{background:rgba(74,124,89,0.08);border-left:3px solid var(--green);}
 .info-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
-.info-what  .info-tag{color:var(--acc2);}
+.info-what .info-tag{color:var(--acc2);}
 .info-output .info-tag{color:var(--gold2);}
-.info-next  .info-tag{color:var(--green);}
-.info-text{color:var(--text2);}
-
-.model-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--b);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin:10px 0 10px;}
+.info-next .info-tag{color:var(--green);}
+.info-text{font-size:13px;color:var(--text2);line-height:1.65;}
+.model-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--b);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin:10px 0;}
 .model-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
 
 /* PROMPT */
@@ -127,10 +132,44 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
 .btn-copy-all:hover{background:var(--gold);}
 .btn-copy-all.ok{background:var(--green);color:#d4f0a0;}
 
+/* VIBE OFFER BUTTON */
+.btn-vibe-offer{margin-top:16px;width:100%;background:transparent;border:1px dashed var(--gold2);border-radius:var(--r2);padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--gold);cursor:pointer;transition:background .2s,border-color .2s;}
+.btn-vibe-offer:hover{background:rgba(154,117,48,.1);border-color:var(--gold);}
+
+/* VIBE TABS */
+.vibe-tabs{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.vibe-tab{background:transparent;border:1px solid var(--b2);border-radius:var(--r2);padding:7px 18px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;transition:all .2s;}
+.vibe-tab:hover{border-color:var(--acc2);color:var(--acc);}
+.vibe-tab.active{background:var(--acc2);border-color:var(--acc2);color:#1a140e;font-weight:600;}
+.btn-cp-code{margin-left:auto;background:var(--surface);border:1px solid var(--b2);border-radius:var(--r2);padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .2s;}
+.btn-cp-code:hover{color:var(--text);border-color:var(--acc2);}
+.btn-cp-code.ok{color:var(--green);border-color:#2d4f38;}
+
+/* CODE EDITOR */
+.code-editor{width:100%;height:340px;background:var(--bg);border:1px solid var(--b2);border-radius:var(--r2);padding:16px;font-family:'Courier New',monospace;font-size:12px;color:var(--acc);resize:vertical;outline:none;line-height:1.6;}
+.btn-update-preview{margin-top:10px;background:transparent;border:1px solid var(--b2);border-radius:var(--r2);padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text2);cursor:pointer;transition:all .2s;}
+.btn-update-preview:hover{border-color:var(--acc2);color:var(--acc);}
+
+/* PREVIEW FRAME */
+.preview-frame{width:100%;height:520px;border:1px solid var(--b2);border-radius:var(--r2);background:white;}
+
+/* PUBLISH GUIDE */
+.publish-divider{height:1px;background:var(--b);margin:28px 0;}
+.publish-method{background:var(--bg3);border:1px solid var(--b);border-radius:var(--r2);padding:20px;margin-bottom:12px;}
+.publish-method-title{font-size:14px;font-weight:600;color:var(--acc);margin-bottom:14px;}
+.publish-steps{list-style:none;padding:0;counter-reset:step-counter;}
+.publish-steps li{counter-increment:step-counter;position:relative;padding:8px 0 8px 32px;border-bottom:1px solid var(--b);font-size:13px;color:var(--text2);line-height:1.7;}
+.publish-steps li:last-child{border-bottom:none;}
+.publish-steps li::before{content:counter(step-counter);position:absolute;left:0;top:9px;width:20px;height:20px;background:var(--bg2);border:1px solid var(--b2);border-radius:50%;font-size:10px;font-weight:700;color:var(--acc2);text-align:center;line-height:20px;}
+.publish-steps small{color:var(--text3);font-size:11px;display:block;margin-top:3px;}
+.publish-steps a{color:var(--acc);}
+.publish-steps code{background:var(--bg);border:1px solid var(--b2);border-radius:4px;padding:1px 6px;font-size:12px;color:var(--acc);font-family:'Courier New',monospace;}
+.publish-steps strong{color:var(--text);font-weight:600;}
+
 @media(max-width:600px){
   nav{padding:16px 20px;}
   .hero{padding:52px 20px 36px;}
-  .headline{font-size:34px;}
+  .headline{font-size:26px;}
   #results{padding:0 20px 60px;}
   .card{padding:20px;}
 }
@@ -159,7 +198,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
 
   <div class="hero">
     <div class="eyebrow">AI를 쉽게, 당신의 방식으로</div>
-    <h1 class="headline">ai사용이 막막 하실 때<br>ai로 무엇을 하고 싶은지<br>알려주세요</h1>
+    <h1 class="headline">이 사이트는 단순한 것을 질문하고<br>물어보는 검색 사이트가 아닙니다.<br>AI를 활용하여 무언가<br>창조하고 싶은 것을 입력하세요</h1>
     <p class="subline">어떤 목표든 괜찮습니다. 막연한 아이디어도 waiv가 단계별 AI 워크플로우로 바꿔드립니다.</p>
 
     <div class="inp-outer">
@@ -167,13 +206,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
         <div class="inp-wrap">
           <textarea
             id="goalInput"
-            placeholder="예: 여러 나라의 뉴스를 번역하고 경제 인사이트를 얻고 싶어요 / AI로 나의 일상 패턴을 분석하고 싶어요..."
+            placeholder="예: 내 카페를 소개하는 웹사이트를 만들고 싶어요 / AI로 유튜브 콘텐츠를 기획하고 싶어요..."
             rows="4" maxlength="1000"
             oninput="updateChar()"
           ></textarea>
           <div class="inp-foot">
             <span class="char-ct" id="charOut">0 / 1000</span>
-            <button class="btn-go" id="btnGo" onclick="startFlow()">분석 시작 →</button>
+            <div class="inp-btns">
+              <button class="btn-mic" id="btnMic" onclick="startVoice()" title="음성으로 입력하기">🎤</button>
+              <button class="btn-go" id="btnGo" onclick="startFlow()">분석 시작 →</button>
+            </div>
           </div>
         </div>
       </div>
@@ -227,13 +269,89 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:22px 4
         <div class="final-text" id="finalText"></div>
       </div>
       <button class="btn-copy-all" id="btnAll" onclick="copyAll()">전체 프롬프트 복사하기</button>
+      <button class="btn-vibe-offer" onclick="buildSite()">🛠️ 혹시 사이트도 만들어 드릴까요?</button>
     </div>
 
-  </div>
-</div>
+    <!-- VIBE: 로딩 -->
+    <div id="vibeThinkWrap" style="display:none">
+      <div class="thinking">
+        <div class="spin"></div>
+        <span>Gemini가 사이트를 제작하는 중입니다... 잠시만 기다려주세요 ☕</span>
+      </div>
+    </div>
+
+    <!-- VIBE: 에러 -->
+    <div id="vibeErrCard" class="card" style="display:none">
+      <div class="err-box" id="vibeErrMsg"></div>
+    </div>
+
+    <!-- VIBE: 결과 -->
+    <div id="vibeCard" class="card" style="display:none">
+      <div class="clabel">사이트 제작 완료</div>
+      <div class="ctitle">Gemini가 사이트를 만들었어요!</div>
+      <p class="cbody" style="margin-bottom:20px">
+        아래에서 미리보기를 확인하고, 마음에 들면 배포 방법을 따라해 보세요. 코드를 수정하면 미리보기가 자동으로 업데이트됩니다.
+      </p>
+
+      <!-- 탭 -->
+      <div class="vibe-tabs">
+        <button id="tabCode" class="vibe-tab active" onclick="showVibeTab('code')">코드 보기</button>
+        <button id="tabPreview" class="vibe-tab" onclick="showVibeTab('preview')">미리보기</button>
+        <button class="btn-cp-code" id="btnCpCode" onclick="copyCode()">코드 복사</button>
+      </div>
+
+      <!-- 코드 패널 -->
+      <div id="vibeCodePanel">
+        <textarea class="code-editor" id="codeEditor" oninput="schedulePreviewUpdate()" spellcheck="false"></textarea>
+        <button class="btn-update-preview" onclick="updatePreview()">미리보기 업데이트 →</button>
+      </div>
+
+      <!-- 미리보기 패널 -->
+      <div id="vibePreviewPanel" style="display:none">
+        <iframe class="preview-frame" id="previewFrame"></iframe>
+      </div>
+
+      <!-- 배포 가이드 -->
+      <div class="publish-divider"></div>
+      <div class="clabel">🌐 인터넷에 올리는 방법</div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.7">
+        생성된 사이트를 인터넷에 무료로 공개하는 방법입니다. 위의 <strong style="color:var(--text)">코드 복사</strong> 버튼을 먼저 클릭하세요.
+      </p>
+
+      <div class="publish-method">
+        <div class="publish-method-title">방법 1 — Netlify (가장 쉬움, 추천 ⭐)</div>
+        <ol class="publish-steps">
+          <li>위의 <strong>코드 복사</strong> 버튼 클릭</li>
+          <li>컴퓨터에서 <strong>메모장</strong>(Windows) 또는 <strong>텍스트 편집기</strong>(Mac) 열기</li>
+          <li>붙여넣기(Ctrl+V 또는 Cmd+V) 후 파일 이름을 <code>index.html</code>로 저장<small>⚠️ Windows 메모장: 저장 시 "파일 형식"을 반드시 "모든 파일(*.*)"로 변경하세요</small></li>
+          <li><a href="https://netlify.com" target="_blank">netlify.com</a> 접속 → <strong>Sign up</strong>으로 무료 회원가입</li>
+          <li>로그인 후 상단 <strong>Sites</strong> 메뉴 클릭</li>
+          <li>페이지 하단 "<strong>파일을 여기에 드래그하거나 클릭하여 업로드</strong>" 영역에 저장한 <code>index.html</code>을 드래그 앤 드롭</li>
+          <li>잠시 후 자동으로 인터넷 주소(예: amazing-site-abc123.netlify.app)가 생성됩니다. 🎉<small>원하면 Site settings에서 주소 이름을 변경할 수 있어요</small></li>
+        </ol>
+      </div>
+
+      <div class="publish-method">
+        <div class="publish-method-title">방법 2 — GitHub Pages (무료 영구 주소)</div>
+        <ol class="publish-steps">
+          <li><a href="https://github.com" target="_blank">github.com</a> 접속 → 무료 회원가입</li>
+          <li>로그인 후 우측 상단 <strong>+</strong> 버튼 → <strong>New repository</strong> 클릭</li>
+          <li>Repository name에 원하는 이름 입력 (예: <code>my-website</code>) → <strong>Public</strong> 선택 → <strong>Create repository</strong> 클릭</li>
+          <li>생성된 페이지에서 "<strong>uploading an existing file</strong>" 링크 클릭</li>
+          <li>저장한 <code>index.html</code> 파일을 드래그 앤 드롭 → 하단 <strong>Commit changes</strong> 클릭</li>
+          <li>상단 <strong>Settings</strong> 탭 클릭 → 좌측 메뉴에서 <strong>Pages</strong> 클릭</li>
+          <li>Source: <strong>Deploy from a branch</strong> 선택 → Branch: <strong>main</strong> 선택 → <strong>Save</strong> 클릭</li>
+          <li>2~3분 후 <code>사용자이름.github.io/my-website</code> 주소로 접속 가능! 🎉</li>
+        </ol>
+      </div>
+
+    </div><!-- /vibeCard -->
+
+  </div><!-- /results -->
+</div><!-- /app -->
 
 <script>
-const S = { goal:'', questions:[], allPrompts:'' };
+const S = { goal:'', questions:[], allPrompts:'', qaPairs:'', generatedHTML:'' };
 
 window.addEventListener('load', () => {
   setTimeout(() => {
@@ -254,12 +372,52 @@ function updateChar() {
 function scrollDown() {
   $('results').scrollIntoView({ behavior:'smooth', block:'start' });
 }
+function scrollTo(id) {
+  const el = $(id);
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
 function showErr(msg) {
   hide('thinkWrap');
   show('errCard');
   $('errMsg').textContent = msg;
 }
 
+/* ── 음성 입력 ─────────────────────────────────────────── */
+function startVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    alert('음성 입력은 Chrome 브라우저에서만 지원됩니다.\nChrome을 사용해주세요.');
+    return;
+  }
+  const recognition = new SR();
+  recognition.lang = 'ko-KR';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  const btn = $('btnMic');
+  btn.textContent = '⏹';
+  btn.classList.add('listening');
+  btn.disabled = true;
+
+  recognition.start();
+
+  recognition.onresult = (e) => {
+    $('goalInput').value = e.results[0][0].transcript;
+    updateChar();
+  };
+  recognition.onerror = (e) => {
+    if (e.error !== 'no-speech' && e.error !== 'aborted') {
+      alert('음성 인식 오류: ' + e.error + '\n마이크 권한을 허용했는지 확인해주세요.');
+    }
+  };
+  recognition.onend = () => {
+    btn.textContent = '🎤';
+    btn.classList.remove('listening');
+    btn.disabled = false;
+  };
+}
+
+/* ── STEP 1: 질문 생성 ─────────────────────────────────── */
 async function startFlow() {
   const goal = $('goalInput').value.trim();
   if (!goal) return;
@@ -268,7 +426,7 @@ async function startFlow() {
   $('btnGo').disabled = true;
   $('goalInput').disabled = true;
   $('results').style.display = 'block';
-  ['summaryCard','qCard','roadCard','finalCard','errCard'].forEach(hide);
+  ['summaryCard','qCard','roadCard','finalCard','vibeThinkWrap','vibeErrCard','vibeCard','errCard'].forEach(hide);
   show('thinkWrap');
   setText('thinkText', '목표를 분석하고 맞춤 질문을 생성하는 중...');
   scrollDown();
@@ -312,6 +470,7 @@ async function startFlow() {
   }
 }
 
+/* ── STEP 2: 로드맵 생성 ───────────────────────────────── */
 async function generateRoadmap() {
   $('btnRoad').disabled = true;
   hide('errCard');
@@ -319,6 +478,8 @@ async function generateRoadmap() {
   const qaPairs = S.questions
     .map((q, i) => 'Q: ' + q + '\nA: ' + (($('a'+i) && $('a'+i).value.trim()) || '(답변 없음)'))
     .join('\n\n');
+
+  S.qaPairs = qaPairs; // buildSite에서 사용
 
   show('thinkWrap');
   setText('thinkText', 'Gemini가 맞춤 로드맵을 설계하는 중...');
@@ -340,45 +501,37 @@ async function generateRoadmap() {
     const pkgLines = ['=== waiv Prompt Package ===', 'Goal: ' + S.goal, ''];
 
     (roadmap.steps || []).forEach((st, i) => {
-      const pid = 'pt' + i;
-      const bid = 'cp' + i;
+      const pid = 'pt' + i, bid = 'cp' + i;
       const isLast = i === roadmap.steps.length - 1;
       const div = document.createElement('div');
       div.className = 'step';
-
       div.innerHTML =
         '<div class="step-num">' + (i+1) + '</div>' +
         '<div>' +
           '<div class="step-title">' + esc(st.title) + '</div>' +
-
           '<div class="info-block info-what">' +
             '<div class="info-tag">지금 할 일</div>' +
             '<div class="info-text">' + esc(st.what_to_do) + '</div>' +
           '</div>' +
-
           '<div class="info-block info-output">' +
             '<div class="info-tag">이 단계의 결과물</div>' +
             '<div class="info-text">' + esc(st.output) + '</div>' +
           '</div>' +
-
           '<div class="info-block info-next">' +
             '<div class="info-tag">' + (isLast ? '🎉 최종 완료' : '다음 단계로 연결') + '</div>' +
             '<div class="info-text">' + esc(st.next_connection) + '</div>' +
           '</div>' +
-
           '<div class="model-badge">' +
             '<span class="model-dot"></span>' +
             esc(st.model) +
             '<span style="color:var(--text3)"> — ' + esc(st.model_reason) + '</span>' +
           '</div>' +
-
           '<div class="prompt-block">' +
             '<div class="prompt-label">복사해서 바로 붙여넣을 프롬프트 · English</div>' +
             '<div class="prompt-text" id="' + pid + '">' + esc(st.prompt) + '</div>' +
             '<button class="btn-cp" id="' + bid + '" onclick="cpPrompt(\'' + pid + '\',\'' + bid + '\')">Copy</button>' +
           '</div>' +
         '</div>';
-
       stepsEl.appendChild(div);
 
       pkgLines.push('--- Step ' + (i+1) + ': ' + st.title + ' ---');
@@ -404,6 +557,78 @@ async function generateRoadmap() {
   }
 }
 
+/* ── STEP 3: 사이트 생성 (Vibe Coding) ────────────────── */
+async function buildSite() {
+  hide('vibeErrCard');
+  show('vibeThinkWrap');
+  hide('vibeCard');
+  scrollTo('vibeThinkWrap');
+
+  try {
+    const res  = await fetch('/api/buildsite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goal: S.goal, qaPairs: S.qaPairs })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '서버 오류 ' + res.status);
+
+    S.generatedHTML = data.html;
+    $('codeEditor').value = data.html;
+    updatePreview();
+
+    hide('vibeThinkWrap');
+    show('vibeCard');
+    scrollTo('vibeCard');
+
+  } catch(e) {
+    hide('vibeThinkWrap');
+    show('vibeErrCard');
+    $('vibeErrMsg').textContent = '사이트 생성 오류: ' + e.message;
+  }
+}
+
+/* ── Vibe 탭 전환 ──────────────────────────────────────── */
+function showVibeTab(tab) {
+  if (tab === 'code') {
+    show('vibeCodePanel');
+    hide('vibePreviewPanel');
+    $('tabCode').classList.add('active');
+    $('tabPreview').classList.remove('active');
+  } else {
+    updatePreview();
+    hide('vibeCodePanel');
+    show('vibePreviewPanel');
+    $('tabPreview').classList.add('active');
+    $('tabCode').classList.remove('active');
+  }
+}
+
+/* ── 미리보기 업데이트 ─────────────────────────────────── */
+function updatePreview() {
+  const html  = $('codeEditor').value;
+  const frame = $('previewFrame');
+  frame.srcdoc = html;
+}
+
+let previewTimer = null;
+function schedulePreviewUpdate() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(updatePreview, 1500);
+}
+
+/* ── 코드 복사 ─────────────────────────────────────────── */
+function copyCode() {
+  const code = $('codeEditor').value;
+  navigator.clipboard.writeText(code).then(() => {
+    const b = $('btnCpCode');
+    b.textContent = '복사 완료!';
+    b.classList.add('ok');
+    setTimeout(() => { b.textContent = '코드 복사'; b.classList.remove('ok'); }, 2000);
+  });
+}
+
+/* ── 프롬프트 복사 ─────────────────────────────────────── */
 function cpPrompt(tid, bid) {
   const txt = $(tid) ? $(tid).textContent : '';
   navigator.clipboard.writeText(txt).then(() => {
@@ -429,5 +654,3 @@ $('goalInput').addEventListener('keydown', e => {
 </script>
 </body>
 </html>
-
-   
