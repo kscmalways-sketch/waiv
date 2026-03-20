@@ -12,12 +12,11 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/* ── JSON 모드 (questions, roadmap용) ───────────────────── */
 function callGemini(prompt, maxOutputTokens) {
   return new Promise((resolve, reject) => {
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return reject(new Error('GEMINI_API_KEY가 설정되지 않았습니다. .env 파일을 확인해주세요.'));
-    }
+    if (!apiKey) return reject(new Error('GEMINI_API_KEY가 설정되지 않았습니다.'));
 
     const bodyBuffer = Buffer.from(JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
@@ -32,42 +31,73 @@ function callGemini(prompt, maxOutputTokens) {
       hostname: 'generativelanguage.googleapis.com',
       path: `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
       method: 'POST',
-      headers: {
-        'Content-Type':   'application/json',
-        'Content-Length': bodyBuffer.length
-      }
+      headers: { 'Content-Type': 'application/json', 'Content-Length': bodyBuffer.length }
     }, (res) => {
       let raw = '';
       res.setEncoding('utf8');
       res.on('data', chunk => { raw += chunk; });
       res.on('end', () => {
         let parsed;
-        try {
-          parsed = JSON.parse(raw);
-        } catch (e) {
-          return reject(new Error('Gemini 응답 파싱 실패: ' + e.message));
-        }
-
-        if (parsed.error) {
-          return reject(new Error('Gemini API 오류: ' + (parsed.error.message || JSON.stringify(parsed.error))));
-        }
-
+        try { parsed = JSON.parse(raw); }
+        catch (e) { return reject(new Error('Gemini 응답 파싱 실패: ' + e.message)); }
+        if (parsed.error) return reject(new Error('Gemini API 오류: ' + (parsed.error.message || JSON.stringify(parsed.error))));
         const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!text) {
           const reason = parsed?.candidates?.[0]?.finishReason || '알 수 없음';
           return reject(new Error('Gemini 응답이 비어있습니다. (finishReason: ' + reason + ')'));
         }
-
         resolve(text);
       });
     });
-
     req.on('error', e => reject(new Error('네트워크 오류: ' + e.message)));
     req.write(bodyBuffer);
     req.end();
   });
 }
 
+/* ── Raw 텍스트 모드 (HTML 사이트 생성용) ───────────────── */
+function callGeminiRaw(prompt, maxOutputTokens) {
+  return new Promise((resolve, reject) => {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) return reject(new Error('GEMINI_API_KEY가 설정되지 않았습니다.'));
+
+    const bodyBuffer = Buffer.from(JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: maxOutputTokens
+      }
+    }), 'utf8');
+
+    const req = https.request({
+      hostname: 'generativelanguage.googleapis.com',
+      path: `/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': bodyBuffer.length }
+    }, (res) => {
+      let raw = '';
+      res.setEncoding('utf8');
+      res.on('data', chunk => { raw += chunk; });
+      res.on('end', () => {
+        let parsed;
+        try { parsed = JSON.parse(raw); }
+        catch (e) { return reject(new Error('Gemini 응답 파싱 실패: ' + e.message)); }
+        if (parsed.error) return reject(new Error('Gemini API 오류: ' + (parsed.error.message || JSON.stringify(parsed.error))));
+        const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!text) {
+          const reason = parsed?.candidates?.[0]?.finishReason || '알 수 없음';
+          return reject(new Error('Gemini 응답이 비어있습니다. (finishReason: ' + reason + ')'));
+        }
+        resolve(text);
+      });
+    });
+    req.on('error', e => reject(new Error('네트워크 오류: ' + e.message)));
+    req.write(bodyBuffer);
+    req.end();
+  });
+}
+
+/* ── JSON 파싱 (잘림 자동 복구 포함) ───────────────────── */
 function parseJSON(raw) {
   let cleaned = raw
     .replace(/^```json\s*/im, '')
@@ -75,9 +105,8 @@ function parseJSON(raw) {
     .replace(/\s*```$/m,      '')
     .trim();
 
-  try {
-    return JSON.parse(cleaned);
-  } catch (e) {
+  try { return JSON.parse(cleaned); }
+  catch (e) {
     let inStr = false, escape = false;
     const stack = [];
     for (const ch of cleaned) {
@@ -92,11 +121,11 @@ function parseJSON(raw) {
     if (inStr) cleaned += '"';
     cleaned = cleaned.replace(/,\s*$/, '');
     while (stack.length) cleaned += stack.pop();
-
     return JSON.parse(cleaned);
   }
 }
 
+/* ── POST /api/questions ────────────────────────────────── */
 app.post('/api/questions', async (req, res) => {
   const goal = (req.body.goal || '').trim();
   if (!goal) return res.status(400).json({ error: '목표를 입력해주세요.' });
@@ -137,13 +166,13 @@ User goal: ${goal}`;
 
     parsed.questions = parsed.questions.slice(0, 5);
     res.json(parsed);
-
   } catch (e) {
     console.error('[/api/questions]', e.message);
     res.status(500).json({ error: e.message });
   }
 });
 
+/* ── POST /api/roadmap ──────────────────────────────────── */
 app.post('/api/roadmap', async (req, res) => {
   const goal    = (req.body.goal    || '').trim();
   const qaPairs = (req.body.qaPairs || '').trim();
@@ -184,8 +213,8 @@ Strict rules:
 - All Korean fields → Korean only. prompt → English only.
 - 3 to 4 steps maximum.
 - Model names must NOT include version numbers: write ChatGPT not GPT-4o, Gemini not Gemini 3 Flash, Claude not Claude 3.5.
-- what_to_do must name a specific website or app (e.g. claude.ai, chat.openai.com, canva.com, docs.google.com). Never leave it empty.
-- next_connection must be actionable — never vague. Always say exactly where and how.
+- what_to_do must name a specific website or app. Never leave it empty.
+- next_connection must be actionable — never vague.
 - prompt must be immediately usable with zero editing — no brackets or placeholders.
 
 User goal: ${goal}
@@ -202,17 +231,13 @@ ${qaPairs || '(없음)'}`;
     if (!Array.isArray(parsed.steps) || parsed.steps.length === 0)
       throw new Error('steps 배열이 비어있습니다.');
 
-    // description → what_to_do 자동 변환 (Gemini가 구 필드명으로 응답할 경우 대비)
     parsed.steps.forEach((step) => {
-      if ((!step.what_to_do || !step.what_to_do.trim()) && step.description && step.description.trim()) {
+      if ((!step.what_to_do || !step.what_to_do.trim()) && step.description && step.description.trim())
         step.what_to_do = step.description;
-      }
-      if (!step.output || !step.output.trim()) {
+      if (!step.output || !step.output.trim())
         step.output = step.what_to_do || '';
-      }
-      if (!step.next_connection || !step.next_connection.trim()) {
+      if (!step.next_connection || !step.next_connection.trim())
         step.next_connection = '결과물을 저장한 뒤 다음 단계로 이동하세요.';
-      }
     });
 
     const required = ['title', 'what_to_do', 'output', 'next_connection', 'model', 'model_reason', 'prompt'];
@@ -225,13 +250,59 @@ ${qaPairs || '(없음)'}`;
 
     parsed.steps = parsed.steps.slice(0, 4);
     res.json(parsed);
-
   } catch (e) {
     console.error('[/api/roadmap]', e.message);
     res.status(500).json({ error: e.message });
   }
 });
 
+/* ── POST /api/buildsite ────────────────────────────────── */
+app.post('/api/buildsite', async (req, res) => {
+  const goal    = (req.body.goal    || '').trim();
+  const qaPairs = (req.body.qaPairs || '').trim();
+  if (!goal) return res.status(400).json({ error: '목표가 없습니다.' });
+
+  const prompt = `You are an expert web developer and designer. Create a complete, beautiful, production-ready single-file HTML website based on the user's goal.
+
+Requirements:
+- Single file: all CSS and JavaScript must be inline within the HTML file
+- Modern, clean, professional design with attractive visual hierarchy
+- Fully responsive — works perfectly on mobile and desktop
+- Include realistic, relevant placeholder content related to the user's goal
+- Use attractive color scheme, good typography, smooth CSS animations
+- Include navigation, hero section, main content section, and footer at minimum
+- Must be completely self-contained — Google Fonts CDN is allowed
+- Write real, working HTML/CSS/JavaScript — not placeholder or skeleton code
+
+Return ONLY the raw HTML code. Start immediately with <!DOCTYPE html>. No explanation, no markdown fences, no extra text before or after the HTML.
+
+User's goal: ${goal}
+
+Additional context from user:
+${qaPairs || '(없음)'}`;
+
+  try {
+    let html = await callGeminiRaw(prompt, 6000);
+
+    // 마크다운 펜스 제거
+    html = html
+      .replace(/^```html\s*/im, '')
+      .replace(/^```\s*/m,      '')
+      .replace(/\s*```$/m,      '')
+      .trim();
+
+    // HTML 유효성 확인
+    if (!html.toLowerCase().includes('<!doctype') && !html.toLowerCase().includes('<html'))
+      throw new Error('유효한 HTML이 생성되지 않았습니다. 다시 시도해주세요.');
+
+    res.json({ html });
+  } catch (e) {
+    console.error('[/api/buildsite]', e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* ── Fallback SPA ───────────────────────────────────────── */
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
